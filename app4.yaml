@@ -1,0 +1,39 @@
+# Deployments  Recreate
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nginx2
+  template:
+    metadata:
+      name: app2-pod
+      labels:
+        app: nginx2
+    spec:
+      containers:
+      - name: app-container
+        image: vamshireddy123/index3
+        ports:
+        - containerPort: 80
+---
+# Cluster IP  Service
+apiVersion: v1
+kind: Service
+metadata:  
+  name: cluster-service
+spec:
+  selector:    
+    app: nginx2
+  type: ClusterIP
+  ports:  
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+        

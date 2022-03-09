@@ -1,0 +1,28 @@
+node
+{
+    stage(" Cloning the project")
+    {
+        git credentialsId: 'af3b87d9-3993-4b5e-8e57-9e26b2afaaf2', url: 'https://github.com/vamshireddy-embedtech/project.git'
+    }
+    stage("Building the image")
+    {
+        sh "docker build -t vamshireddy123/index3 ."
+    }
+    stage("Docker Hub Registry")
+    {
+      withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'DOCKER_HUB_CREDENTIALS')])
+      {
+        sh "docker login -u vamshireddy123 -p ${DOCKER_HUB_CREDENTIALS}"
+      }
+      sh "docker push vamshireddy123/index3"
+    }
+    stage("Depolying Application")
+    {
+        kubernetesDeploy(
+            configs: 'app4.yaml',
+            kubeconfigId: 'KUBERNETES_CLUSTER-CONFIG',
+            enableConfigSubstitution: true
+            
+            )
+    }
+}

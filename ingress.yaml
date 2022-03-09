@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-resource-1
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app1.myhive-control.com
+    http:
+      paths:
+      - backend:
+          serviceName: app2-service
+          servicePort: 80
+  - host: app3.myhive-control.com
+    http:
+      paths:
+      - backend:
+          serviceName: clusterip-service
+          servicePort: 80
+  - host: app2.myhive-control.com
+    http:
+      paths:
+      - backend:
+          serviceName: clusteripp-service
+          servicePort: 80
+  
+        
+  
+
